@@ -1,2 +1,1 @@
-#!/bin/bash
-ls -la > ls_cwd_content
+Write a script that duplicates the last line of the file iacta

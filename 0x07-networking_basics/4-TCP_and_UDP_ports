@@ -1,11 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
+# This script displays listening sockets with the PID and name of the program to which each socket belongs
 
-# Display listening sockets and their associated PID and program name
-netstat -tuln | grep LISTEN | awk '{print $1, $4, $7}' | while read line; do
-    protocol=$(echo "$line" | awk '{print $1}')
-    port=$(echo "$line" | awk '{print $4}')
-    pid=$(echo "$line" | awk '{print $7}')
-    program=$(basename $(readlink /proc/$pid/exe))
-
-    # Display information
-    echo "Protocol: $protocol, Port: $port, PID: $pid, Program: $program"
+netstat -lp

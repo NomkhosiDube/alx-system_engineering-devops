@@ -1,33 +1,24 @@
-#!/bin/bash
+#!/usr/bin/env bash
+# Does the following:
+#   Create a file /var/run/myscript.pid containing the script PID.
+#   Displays "To infinity and beyond" indefinitely
+#   Displays "I hate the kill command" upon receiving a SIGTERM
+#   Displays "Y U no love me?!" upon receiving a SIGINT
+#   Deletes the file /var/run/myscript.pid and terminates upon
+#+  receiving a SIGQUIT or SIGTERM.
 
-# Function to handle signals
-handle_signal() {
-    case $1 in
-        SIGTERM|SIGQUIT)
-            echo "Deleting PID file and terminating script..."
-            rm -f /var/run/myscript.pid
-            exit ;;
-        SIGINT)
-            echo "Y U no love me?!" ;;
-        SIGTERM)
-            echo "I hate the kill command" ;;
-    esac
+terminator() {
+  rm /var/run/myscript.pid
+  exit
 }
 
-# Register signal handlers
-trap 'handle_signal SIGTERM' SIGTERM
-trap 'handle_signal SIGQUIT' SIGQUIT
-trap 'handle_signal SIGINT' SIGINT
+echo "$$" > /var/run/myscript.pid
 
-# Create PID file
-echo $$ > /var/run/myscript.pid
-
-# Display message
-echo "To infinity and beyond"
-
-# Loop indefinitely
-while true; do
-    sleep 1
-    echo "To infinity and beyond"
+while true
+do
+  echo "To infinity and beyond"
+  sleep 2
+  trap 'echo "Y U no love me?!"' SIGINT
+  trap 'echo "I hate the kill command" && terminator' SIGTERM
+  trap 'terminator' SIGQUITgit 
 done
-

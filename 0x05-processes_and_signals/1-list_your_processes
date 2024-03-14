@@ -1,4 +1,7 @@
-#!/bin/bash
+!/usr/bin/env bash
+# This script displays list of currently running processes
+# Must show all processes, for all users, including those which might not have a TTY
+# Display a user-oriented format
+# Show process hierarchy
 
-# Use pstree to display a tree of running processes
-pstree -a
+ps -a -x -u -f
